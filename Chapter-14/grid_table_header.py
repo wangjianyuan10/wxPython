@@ -3,7 +3,7 @@ import wx.grid
 
 class TestTable(wx.grid.PyGridTableBase):
     def __init__(self):
-        wx.grid.PyGridTableBase.__init__(self)
+        wx.grid.GridTableBase.__init__(self)
         self.data = { (1,1) : "Here",
                       (2,2) : "is",
                       (3,3) : "some",
@@ -58,7 +58,7 @@ class TestFrame(wx.Frame):
         grid.SetTable(table, True)
         
 
-app = wx.PySimpleApp()
+app = wx.App()
 frame = TestFrame()
 frame.Show()
 app.MainLoop()

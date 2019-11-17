@@ -4,7 +4,7 @@ import random
 
 class RandomBackgroundRenderer(wx.grid.PyGridCellRenderer):
     def __init__(self):
-        wx.grid.PyGridCellRenderer.__init__(self)
+        wx.grid.GridCellRenderer.__init__(self)
 
 
     def Draw(self, grid, attr, dc, rect, row, col, isSelected):
@@ -22,7 +22,7 @@ class RandomBackgroundRenderer(wx.grid.PyGridCellRenderer):
         dc.SetTextForeground(fg)
         dc.SetBrush(wx.Brush(bg, wx.SOLID))
         dc.SetPen(wx.TRANSPARENT_PEN)
-        dc.DrawRectangleRect(rect)           
+        dc.DrawRectangle(rect)           
         grid.DrawTextRectangle(dc, text, rect, hAlign, vAlign)
 
 
@@ -53,7 +53,7 @@ class TestFrame(wx.Frame):
                 grid.SetCellValue(row, col,
                                   "cell (%d,%d)" % (row, col))
 
-app = wx.PySimpleApp()
+app = wx.App()
 frame = TestFrame()
 frame.Show()
 app.MainLoop()

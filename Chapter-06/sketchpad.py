@@ -5,7 +5,7 @@ class SketchWindow(wx.Window):
     def __init__(self, parent, ID):
         wx.Window.__init__(self, parent, ID)
         self.SetBackgroundColour("White")
-        self.color = "Black"
+        self.color = "black"
         self.thickness = 1
         self.pen = wx.Pen(self.color, self.thickness, wx.SOLID)
         self.lines = []
@@ -22,7 +22,7 @@ class SketchWindow(wx.Window):
 
     def InitBuffer(self):
         size = self.GetClientSize()
-        self.buffer = wx.EmptyBitmap(size.width, size.height)
+        self.buffer = wx.Bitmap(size.width, size.height)
         dc = wx.BufferedDC(None, self.buffer)
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
@@ -39,7 +39,7 @@ class SketchWindow(wx.Window):
 
     def OnLeftDown(self, event):
         self.curLine = []
-        self.pos = event.GetPositionTuple()
+        self.pos = event.GetPosition()
         self.CaptureMouse()
 
     def OnLeftUp(self, event):
@@ -58,8 +58,8 @@ class SketchWindow(wx.Window):
 
     def drawMotion(self, dc, event):
         dc.SetPen(self.pen)
-        newPos = event.GetPositionTuple()
-        coords = self.pos + newPos
+        newPos = event.GetPosition()
+        coords = (self.pos,newPos)
         self.curLine.append(coords)
         dc.DrawLine(*coords)
         self.pos = newPos
@@ -98,7 +98,7 @@ class SketchFrame(wx.Frame):
         self.sketch = SketchWindow(self, -1)
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = SketchFrame(None)
     frame.Show(True)
     app.MainLoop()

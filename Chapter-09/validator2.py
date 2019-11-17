@@ -7,9 +7,9 @@ can be used to transfer data to and from each text control
 automatically when the dialog is shown and dismissed."""
 
 
-class DataXferValidator(wx.PyValidator):
+class DataXferValidator(wx.Validator):
      def __init__(self, data, key):
-         wx.PyValidator.__init__(self)
+         wx.Validator.__init__(self)
          self.data = data
          self.key = key
 
@@ -78,7 +78,7 @@ class MyDialog(wx.Dialog):
         sizer.Fit(self)
         
 
-app = wx.PySimpleApp()
+app = wx.App()
 
 data = { "name" : "Jordyn Dunn" }
 dlg = MyDialog(data)

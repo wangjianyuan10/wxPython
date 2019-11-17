@@ -1,7 +1,7 @@
 import wx
 
 if __name__ == "__main__":
-    app = wx.PySimpleApp()
+    app = wx.App()
     progressMax = 100
     dialog = wx.ProgressDialog("A progress box", "Time remaining", progressMax,
             style=wx.PD_CAN_ABORT | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME)

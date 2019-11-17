@@ -9,9 +9,9 @@ and the third will not allow alphabetic characters to be entered.
 """
 
 
-class CharValidator(wx.PyValidator):
+class CharValidator(wx.Validator):
     def __init__(self, flag):
-         wx.PyValidator.__init__(self)
+         wx.Validator.__init__(self)
          self.flag = flag
          self.Bind(wx.EVT_CHAR, self.OnChar)
 
@@ -32,7 +32,7 @@ class CharValidator(wx.PyValidator):
 
     def OnChar(self, evt):
          key = chr(evt.GetKeyCode())
-         if self.flag == "no-alpha" and key in string.letters:
+         if self.flag == "no-alpha" and key in string.ascii_letters:
               return
          if self.flag == "no-digit" and key in string.digits:
               return
@@ -83,7 +83,7 @@ class MyDialog(wx.Dialog):
         sizer.Fit(self)
         
 
-app = wx.PySimpleApp()
+app = wx.App()
 
 dlg = MyDialog()
 dlg.ShowModal()

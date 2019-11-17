@@ -1,9 +1,9 @@
 import wx
-import wx.wizard
+import wx.adv
 
-class TitledPage(wx.wizard.WizardPageSimple):
+class TitledPage(wx.adv.WizardPageSimple):
     def __init__(self, parent, title):
-        wx.wizard.WizardPageSimple.__init__(self, parent)
+        wx.adv.WizardPageSimple.__init__(self, parent)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
         titleText = wx.StaticText(self, -1, title)
@@ -15,8 +15,8 @@ class TitledPage(wx.wizard.WizardPageSimple):
                 wx.EXPAND | wx.ALL, 5)
 
 if __name__ == "__main__":
-    app = wx.PySimpleApp()
-    wizard = wx.wizard.Wizard(None, -1, "Simple Wizard")
+    app = wx.App()
+    wizard = wx.adv.Wizard(None, -1, "Simple Wizard")
     page1 = TitledPage(wizard, "Page 1")
     page2 = TitledPage(wizard, "Page 2")
     page3 = TitledPage(wizard, "Page 3")
@@ -25,13 +25,13 @@ if __name__ == "__main__":
             "Testing the wizard"))
     page4.sizer.Add(wx.StaticText(page4, -1,
             "This is the last page."))
-    wx.wizard.WizardPageSimple_Chain(page1, page2)
-    wx.wizard.WizardPageSimple_Chain(page2, page3)
-    wx.wizard.WizardPageSimple_Chain(page3, page4)
+    wx.adv.WizardPageChain(page1, page2)
+    wx.adv.WizardPageChain(page2, page3)
+    wx.adv.WizardPageChain(page3, page4)
     wizard.FitToPage(page1)
 
     if wizard.RunWizard(page1):
-        print "Success"
+        print("Success")
 
     wizard.Destroy()
 

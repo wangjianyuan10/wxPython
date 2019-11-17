@@ -27,7 +27,7 @@ class TestFrame(wx.Frame):
         
         # Add a root node and assign it some images
         root = self.tree.AddRoot("wx.Object")
-        self.tree.SetItemPyData(root, None)
+        self.tree.SetItemData(root, None)
         self.tree.SetItemImage(root, self.fldridx,
                                wx.TreeItemIcon_Normal)
         self.tree.SetItemImage(root, self.fldropenidx,
@@ -71,12 +71,12 @@ class TestFrame(wx.Frame):
         for item in items:
             if type(item) == str:
                 newItem = self.tree.AppendItem(parentItem, item)
-                self.tree.SetItemPyData(newItem, None)
+                self.tree.SetItemData(newItem, None)
                 self.tree.SetItemImage(newItem, self.fileidx,
                                        wx.TreeItemIcon_Normal)
             else:
                 newItem = self.tree.AppendItem(parentItem, item[0])
-                self.tree.SetItemPyData(newItem, None)
+                self.tree.SetItemData(newItem, None)
                 self.tree.SetItemImage(newItem, self.fldridx,
                                        wx.TreeItemIcon_Normal)
                 self.tree.SetItemImage(newItem, self.fldropenidx,
@@ -92,26 +92,26 @@ class TestFrame(wx.Frame):
             return ""
         
     def OnItemExpanded(self, evt):
-        print "OnItemExpanded: ", self.GetItemText(evt.GetItem())
+        print("OnItemExpanded: ", self.GetItemText(evt.GetItem()))
         
     def OnItemCollapsed(self, evt):
-        print "OnItemCollapsed:", self.GetItemText(evt.GetItem())
+        print ("OnItemCollapsed:", self.GetItemText(evt.GetItem()))
 
     def OnSelChanged(self, evt):
-        print "OnSelChanged:   ", self.GetItemText(evt.GetItem())
+        print ("OnSelChanged:   ", self.GetItemText(evt.GetItem()))
 
     def OnActivated(self, evt):
-        print "OnActivated:    ", self.GetItemText(evt.GetItem())
+        print( "OnActivated:    ", self.GetItemText(evt.GetItem()))
 
 
     def OnBeginEdit(self, evt):
-        print "OnBeginEdit:    ", self.GetItemText(evt.GetItem())
+        print ("OnBeginEdit:    ", self.GetItemText(evt.GetItem()))
         # we can prevent nodes from being edited, for example let's
         # not let the root node be edited...
         item = evt.GetItem()
         if item == self.tree.GetRootItem():
             evt.Veto()
-            print "*** Edit was vetoed!"
+            print ("*** Edit was vetoed!")
             
         
     def OnEditItem(self, evt):
@@ -136,7 +136,7 @@ class TestFrame(wx.Frame):
 
     def PrintAllItems(self, parent, indent=0):
         text = self.tree.GetItemText(parent)
-        print ' ' * indent, text
+        print (' ' * indent, text)
         indent += 4
         item, cookie = self.tree.GetFirstChild(parent)
         while item:
@@ -144,11 +144,11 @@ class TestFrame(wx.Frame):
                 self.PrintAllItems(item, indent)
             else:
                 text = self.tree.GetItemText(item)
-                print ' ' * indent, text
+                print (' ' * indent, text)
             item, cookie = self.tree.GetNextChild(parent, cookie)
 
 
-app = wx.PySimpleApp(redirect=True)
+app = wx.App(redirect=True)
 frame = TestFrame()
 frame.Show()
 app.MainLoop()

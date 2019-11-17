@@ -1,6 +1,6 @@
 import wx
 
-ID_SIMPLE = wx.NewId()
+
 
 class MyFrame(wx.Frame):
     def __init__(self):
@@ -11,10 +11,10 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnToggleItem, self.btn)
         
         menu = wx.Menu()
-        menu.Append(ID_SIMPLE, "Simple menu item")
+        menu.Append(wx.NewIdRef(), "Simple menu item")
         self.enabled = True
-        self.Bind(wx.EVT_MENU, self.OnSimple, id=ID_SIMPLE)
-        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateSimple, id=ID_SIMPLE)
+        self.Bind(wx.EVT_MENU, self.OnSimple, id=wx.NewIdRef())
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateSimple, id=wx.NewIdRef())
         
         menu.AppendSeparator()
         menu.Append(wx.ID_EXIT, "Exit")
@@ -41,7 +41,7 @@ class MyFrame(wx.Frame):
         
 
 if __name__ == "__main__":
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = MyFrame()
     frame.Show()
     app.MainLoop()

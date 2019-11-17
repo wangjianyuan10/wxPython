@@ -14,18 +14,18 @@ class ToolbarFrame(wx.Frame):
         panel.SetBackgroundColour('White')
         statusBar = self.CreateStatusBar()
         toolbar = self.CreateToolBar()
-        toolbar.AddSimpleTool(wx.NewId(), images.getNewBitmap(),
-                "New", "Long help for 'New'")
+        toolbar.AddTool(100,"New", images.getNewBitmap(),
+                "Long help for 'New'")
         toolbar.Realize()
         menuBar = wx.MenuBar()
         menu1 = wx.Menu()
         menuBar.Append(menu1, "&File")
         menu2 = wx.Menu()
-        menu2.Append(wx.NewId(), "&Copy", "Copy in status bar")
-        menu2.Append(wx.NewId(), "C&ut", "")
-        menu2.Append(wx.NewId(), "Paste", "")
+        menu2.Append(101, "&Copy", "Copy in status bar")
+        menu2.Append(102, "C&ut", "")
+        menu2.Append(103, "Paste", "")
         menu2.AppendSeparator()
-        menu2.Append(wx.NewId(), "&Options...", "Display Options")
+        menu2.Append(104, "&Options...", "Display Options")
         menuBar.Append(menu2, "&Edit")
 
         menu3 = wx.Menu()
@@ -54,7 +54,7 @@ class ToolbarFrame(wx.Frame):
         frame.Show()
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     app.frame = ToolbarFrame(parent=None, id=-1)
     app.frame.Show()
     app.MainLoop()

@@ -11,6 +11,7 @@ class ShapedFrame(wx.Frame):
         self.SetClientSize((self.bmp.GetWidth(), self.bmp.GetHeight()))
         dc = wx.ClientDC(self)
         dc.DrawBitmap(self.bmp, 0,0, True)
+        self.Center()
         self.SetWindowShape()
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
@@ -21,7 +22,7 @@ class ShapedFrame(wx.Frame):
         self.Bind(wx.EVT_WINDOW_CREATE, self.SetWindowShape)
 
     def SetWindowShape(self, evt=None):
-        r = wx.RegionFromBitmap(self.bmp)
+        r = wx.Region(self.bmp)
         self.hasShape = self.SetShape(r)
 
     def OnDoubleClick(self, evt):
@@ -57,7 +58,7 @@ class ShapedFrame(wx.Frame):
 
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     ShapedFrame().Show()
     app.MainLoop()
 

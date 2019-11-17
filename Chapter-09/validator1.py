@@ -6,9 +6,9 @@ controls are not empty when you press the Ok button, and
 will not let you leave if any of the Validations fail."""
 
 
-class NotEmptyValidator(wx.PyValidator):
+class NotEmptyValidator(wx.Validator):
      def __init__(self):
-         wx.PyValidator.__init__(self)
+         wx.Validator.__init__(self)
 
      def Clone(self):
          """
@@ -27,8 +27,7 @@ class NotEmptyValidator(wx.PyValidator):
              textCtrl.Refresh()
              return False
          else:
-             textCtrl.SetBackgroundColour(
-                 wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+             textCtrl.SetBackgroundColour("white")
              textCtrl.Refresh()
              return True
 
@@ -84,7 +83,7 @@ class MyDialog(wx.Dialog):
         sizer.Fit(self)
         
 
-app = wx.PySimpleApp()
+app = wx.App()
 
 dlg = MyDialog()
 dlg.ShowModal()

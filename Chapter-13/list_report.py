@@ -21,7 +21,7 @@ class DemoFrame(wx.Frame):
 
         # add the rows
         for item in data.rows:
-            index = self.list.InsertStringItem(sys.maxint, item[0])
+            index = self.list.InsertStringItem(sys.maxsize, item[0])
             for col, text in enumerate(item[1:]):
                 self.list.SetStringItem(index, col+1, text)
 
@@ -36,7 +36,7 @@ class DemoFrame(wx.Frame):
         self.list.SetColumnWidth(3, wx.LIST_AUTOSIZE_USEHEADER)
 
 
-app = wx.PySimpleApp()
+app = wx.App()
 frame = DemoFrame()
 frame.Show()
 app.MainLoop()

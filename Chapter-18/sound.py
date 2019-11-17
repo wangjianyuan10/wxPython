@@ -1,3 +1,4 @@
+import wx.adv
 import wx
 from wx.lib.filebrowsebutton import FileBrowseButton
 
@@ -25,14 +26,14 @@ class MyFrame(wx.Frame):
 
     def OnPlaySound(self, evt):
         filename = self.fbb.GetValue()
-        self.sound = wx.Sound(filename)
+        self.sound = wx.adv.Sound(filename)
         if self.sound.IsOk():
-            self.sound.Play(wx.SOUND_ASYNC)
+            self.sound.Play(wx.adv.SOUND_ASYNC)
         else:
             wx.MessageBox("Invalid sound file", "Error")
     
 
-app = wx.PySimpleApp()
+app = wx.App()
 frm = MyFrame()
 frm.Show()
 app.MainLoop()

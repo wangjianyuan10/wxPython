@@ -23,7 +23,7 @@ class TestFrame(wx.Frame):
         # data to the root node so that it can find and add its child
         # nodes when it is expanded, and mark it as having children so
         # it will be expandable.
-        self.tree.SetItemPyData(root, data.tree)
+        self.tree.SetItemData(root, data.tree)
         self.tree.SetItemHasChildren(root, True)
         
         # Bind some interesting events
@@ -40,7 +40,7 @@ class TestFrame(wx.Frame):
         """
         Add nodes for just the children of the parentItem
         """
-        items = self.tree.GetItemPyData(parentItem)
+        items = self.tree.GetItemData(parentItem)
         for item in items:
             if type(item) == str:
                 # a leaf node
@@ -54,7 +54,7 @@ class TestFrame(wx.Frame):
                                        wx.TreeItemIcon_Normal)
                 self.tree.SetItemImage(newItem, self.fldropenidx,
                                        wx.TreeItemIcon_Expanded)
-                self.tree.SetItemPyData(newItem, item[1])
+                self.tree.SetItemData(newItem, item[1])
                 self.tree.SetItemHasChildren(newItem, True)
    
                 
@@ -66,26 +66,26 @@ class TestFrame(wx.Frame):
             return ""
         
     def OnItemExpanded(self, evt):
-        print "OnItemExpanded: ", self.GetItemText(evt.GetItem())
+        print( "OnItemExpanded: ", self.GetItemText(evt.GetItem()))
 
     def OnItemExpanding(self, evt):
         # When the item is about to be expanded add the first level of child nodes
-        print "OnItemExpanding:", self.GetItemText(evt.GetItem())
+        print( "OnItemExpanding:", self.GetItemText(evt.GetItem()))
         self.AddTreeNodes(evt.GetItem())
         
     def OnItemCollapsed(self, evt):
-        print "OnItemCollapsed:", self.GetItemText(evt.GetItem())
+        print( "OnItemCollapsed:", self.GetItemText(evt.GetItem()))
         # And remove them when collapsed as we don't need them any longer
         self.tree.DeleteChildren(evt.GetItem())
 
     def OnSelChanged(self, evt):
-        print "OnSelChanged:   ", self.GetItemText(evt.GetItem())
+        print("OnSelChanged:   ", self.GetItemText(evt.GetItem()))
 
     def OnActivated(self, evt):
-        print "OnActivated:    ", self.GetItemText(evt.GetItem())
+        print("OnActivated:    ", self.GetItemText(evt.GetItem()))
 
 
-app = wx.PySimpleApp(redirect=True)
+app = wx.App(redirect=True)
 frame = TestFrame()
 frame.Show()
 app.MainLoop()

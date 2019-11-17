@@ -34,7 +34,7 @@ class DemoFrame(wx.Frame, wx.lib.mixins.listctrl.ColumnSorterMixin):
         # add the rows
         self.itemDataMap = {}
         for item in data.rows:
-            index = self.list.InsertStringItem(sys.maxint, item[0])
+            index = self.list.InsertStringItem(sys.maxsize, item[0])
             for col, text in enumerate(item[1:]):
                 self.list.SetStringItem(index, col+1, text)
 
@@ -64,7 +64,7 @@ class DemoFrame(wx.Frame, wx.lib.mixins.listctrl.ColumnSorterMixin):
         return (self.dn, self.up)
 
 
-app = wx.PySimpleApp()
+app = wx.App()
 frame = DemoFrame()
 frame.Show()
 app.MainLoop()

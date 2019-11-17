@@ -1,5 +1,5 @@
 import wx
-from example1 import SketchWindow
+from sketchpad import SketchWindow
 
 
 class SketchFrame(wx.Frame):
@@ -18,7 +18,7 @@ class SketchFrame(wx.Frame):
 
     def OnSketchMotion(self, event):
         self.statusbar.SetStatusText("Pos: %s" %
-                str(event.GetPositionTuple()), 0)
+                str(event.GetPosition()), 0)
         self.statusbar.SetStatusText("Current Pts: %s" %
                 len(self.sketch.curLine), 1)
         self.statusbar.SetStatusText("Line Count: %s" %
@@ -57,7 +57,7 @@ class SketchFrame(wx.Frame):
             if len(eachItem) == 2:
                 label = eachItem[0]
                 subMenu = self.createMenu(eachItem[1])
-                menu.AppendMenu(wx.NewId(), label, subMenu)
+                menu.Append(wx.NewIdRef(count=1), label, subMenu)           #NewId ->wx.NewIdRef(count=1)
             else:
                 self.createMenuItem(menu, *eachItem)
         return menu
@@ -67,7 +67,7 @@ class SketchFrame(wx.Frame):
         if not label:
             menu.AppendSeparator()
             return
-        menuItem = menu.Append(-1, label, status, kind)
+        menuItem = menu.Append(101,label, status, kind)
         self.Bind(wx.EVT_MENU, handler, menuItem)
 
     def OnNew(self, event): pass
@@ -78,7 +78,7 @@ class SketchFrame(wx.Frame):
         menubar = self.GetMenuBar()
         itemId = event.GetId()
         item = menubar.FindItemById(itemId)
-        color = item.GetLabel()
+        color = item.GetItemLabel()[1:]
         self.sketch.SetColor(color)
 
     def OnCloseWindow(self, event):
@@ -86,7 +86,7 @@ class SketchFrame(wx.Frame):
 
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = SketchFrame(None)
     frame.Show(True)
     app.MainLoop()

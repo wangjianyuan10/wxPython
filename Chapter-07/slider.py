@@ -9,14 +9,14 @@ class SliderFrame(wx.Frame):
         slider = wx.Slider(panel, 100, 25, 1, 100, pos=(10, 10),
                 size=(250, -1),
                 style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS )
-        slider.SetTickFreq(5, 1)
+        slider.SetTickFreq(5)
         slider = wx.Slider(panel, 100, 25, 1, 100, pos=(125, 70),
                 size=(-1, 250),
                 style=wx.SL_VERTICAL | wx.SL_AUTOTICKS | wx.SL_LABELS )
-        slider.SetTickFreq(20, 1)
+        slider.SetTickFreq(20)
         
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = SliderFrame()
     frame.Show()
     app.MainLoop() 

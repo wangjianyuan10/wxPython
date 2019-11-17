@@ -1,15 +1,15 @@
 import wx
 
 if __name__ == "__main__":
-    app = wx.PySimpleApp()
+    app = wx.App()
     dlg = wx.MessageDialog(None, "Is this explanation OK?",
                           'A Message Box',
                           wx.YES_NO | wx.ICON_QUESTION)
     retCode = dlg.ShowModal()
     if (retCode == wx.ID_YES):
-        print "yes"
+        print("yes")
     else:
-        print "no"
+        print("no")
     dlg.Destroy()
 
     retCode = wx.MessageBox("Is this way easier?", "Via Function",

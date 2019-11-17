@@ -13,11 +13,11 @@ class GaugeFrame(wx.Frame):
 
     def OnIdle(self, event):
         self.count = self.count + 1
-        if self.count >= 50:
+        if self.count >= 100:
             self.count = 0
         self.gauge.SetValue(self.count)
         
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     GaugeFrame().Show()
     app.MainLoop()  

@@ -217,7 +217,7 @@ class PrintFrameworkSample(wx.Frame):
         printout.Destroy()
         
     
-app = wx.PySimpleApp()
+app = wx.App()
 frm = PrintFrameworkSample()
 frm.Show()
 app.MainLoop()

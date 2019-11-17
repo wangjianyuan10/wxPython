@@ -42,7 +42,7 @@ class RadarGraph(wx.Window):
         # then draw our graph to it.  Since we use wx.BufferedDC
         # whatever is drawn to the buffer is also drawn to the window.
         w, h = self.GetClientSize()        
-        self.buffer = wx.EmptyBitmap(w, h)
+        self.buffer = wx.Bitmap(w, h)
         dc = wx.BufferedDC(wx.ClientDC(self), self.buffer)
         self.DrawGraph(dc)
         
@@ -164,7 +164,7 @@ class TestFrame(wx.Frame):
         self.plot.SetData(data)
 
         
-app = wx.PySimpleApp()
+app = wx.App()
 frm = TestFrame()
 frm.Show()
 app.MainLoop()

@@ -1,5 +1,5 @@
 import wx
-from example1 import SketchWindow
+from sketchpad import SketchWindow
 
 
 class SketchFrame(wx.Frame):
@@ -19,7 +19,7 @@ class SketchFrame(wx.Frame):
 
     def OnSketchMotion(self, event):
         self.statusbar.SetStatusText("Pos: %s" %
-                str(event.GetPositionTuple()), 0)
+                str(event.GetPosition()), 0)
         self.statusbar.SetStatusText("Current Pts: %s" %
                 len(self.sketch.curLine), 1)
         self.statusbar.SetStatusText("Line Count: %s" %
@@ -54,7 +54,7 @@ class SketchFrame(wx.Frame):
             if len(eachItem) == 2:
                 label = eachItem[0]
                 subMenu = self.createMenu(eachItem[1])
-                menu.AppendMenu(wx.NewId(), label, subMenu)
+                menu.Append(wx.ID_ANY, label, subMenu)
             else:
                 self.createMenuItem(menu, *eachItem)
         return menu
@@ -80,7 +80,7 @@ class SketchFrame(wx.Frame):
             toolbar.AddSeparator()
             return
         bmp = wx.Image(filename, wx.BITMAP_TYPE_BMP).ConvertToBitmap()
-        tool = toolbar.AddSimpleTool(-1, bmp, label, help)
+        tool = toolbar.AddTool(-1,label,bmp, help)
         self.Bind(wx.EVT_MENU, handler, tool)
 
     def toolbarData(self):
@@ -91,11 +91,11 @@ class SketchFrame(wx.Frame):
 
     def createColorTool(self, toolbar, color):
         bmp = self.MakeBitmap(color)
-        tool = toolbar.AddRadioTool(-1, bmp, shortHelp=color)
+        tool = toolbar.AddRadioTool(-1,"color",bmp, shortHelp=color)
         self.Bind(wx.EVT_MENU, self.OnColor, tool)
 
     def MakeBitmap(self, color):
-        bmp = wx.EmptyBitmap(16, 15)
+        bmp = wx.Bitmap(16, 15)
         dc = wx.MemoryDC()
         dc.SelectObject(bmp)
         dc.SetBackground(wx.Brush(color))
@@ -119,14 +119,14 @@ class SketchFrame(wx.Frame):
             item = toolbar.FindById(itemId)
             color = item.GetShortHelp()
         else:
-            color = item.GetLabel()
+            color = item.GetLabel()[1:]
         self.sketch.SetColor(color)
 
     def OnCloseWindow(self, event):
         self.Destroy()
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = SketchFrame(None)
     frame.Show(True)
     app.MainLoop()

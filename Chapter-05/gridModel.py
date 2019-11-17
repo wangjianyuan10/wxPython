@@ -12,7 +12,7 @@ class LineupTable(wx.grid.PyGridTableBase):
     colLabels = ("Last", "First")
 
     def __init__(self):
-        wx.grid.PyGridTableBase.__init__(self)
+        wx.grid.GridTableBase.__init__(self)
 
     def GetNumberRows(self):
         return len(self.data)
@@ -47,7 +47,7 @@ class TestFrame(wx.Frame):
         grid = SimpleGrid(self)
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = TestFrame(None)
     frame.Show(True)
     app.MainLoop()

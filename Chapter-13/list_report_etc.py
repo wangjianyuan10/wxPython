@@ -39,7 +39,7 @@ class DemoFrame(wx.Frame):
 
         # add the rows
         for row, item in enumerate(data.rows):
-            index = self.list.InsertStringItem(sys.maxint, item[0])
+            index = self.list.InsertStringItem(sys.maxsize, item[0])
             for col, text in enumerate(item[1:]):
                 self.list.SetStringItem(index, col+1, text)
 
@@ -114,15 +114,15 @@ class DemoFrame(wx.Frame):
 
     def OnItemSelected(self, evt):
         item = evt.GetItem()
-        print "Item selected:", item.GetText()
+        print("Item selected:", item.GetText())
         
     def OnItemDeselected(self, evt):
         item = evt.GetItem()
-        print "Item deselected:", item.GetText()
+        print ("Item deselected:", item.GetText())
 
     def OnItemActivated(self, evt): 
         item = evt.GetItem()
-        print "Item activated:", item.GetText()
+        print ("Item activated:", item.GetText())
 
     def OnSortAscending(self, evt):
         # recreate the listctrl with a sort style
@@ -146,14 +146,14 @@ class DemoFrame(wx.Frame):
 
 
     def OnShowSelected(self, evt):
-        print "These items are selected:"
+        print ("These items are selected:")
         index = self.list.GetFirstSelected()
         if index == -1:
-            print "\tNone"
+            print( "\tNone")
             return
         while index != -1:
             item = self.list.GetItem(index)
-            print "\t%s" % item.GetText()
+            print("\t%s" % item.GetText())
             index = self.list.GetNextSelected(index)
             
     def OnSelectAll(self, evt):
@@ -202,7 +202,7 @@ class DemoApp(wx.App):
     def OnInit(self):
         frame = DemoFrame()
         self.SetTopWindow(frame)
-        print "Program output appears here..."
+        print( "Program output appears here...")
         frame.Show()
         return True
 

@@ -1,10 +1,12 @@
 import wx
-import wx.html
-import cPickle
+try:
+    import _pickle as cPickle
+except:
+    import cPickle
 import os
-from wx.lib import buttons
 
-from example1 import SketchWindow
+from sketchpad import SketchWindow
+
 
 class SketchFrame(wx.Frame):
     def __init__(self, parent):
@@ -13,18 +15,10 @@ class SketchFrame(wx.Frame):
                 size=(800,600))
         self.filename = ""
         self.sketch = SketchWindow(self, -1)
-        wx.EVT_MOTION(self.sketch, self.OnSketchMotion)
+        self.sketch.Bind(wx.EVT_MOTION, self.OnSketchMotion)
         self.initStatusBar()
         self.createMenuBar()
         self.createToolBar()
-        self.createPanel()
-
-    def createPanel(self):
-        controlPanel = ControlPanel(self, -1, self.sketch)
-        box = wx.BoxSizer(wx.HORIZONTAL)
-        box.Add(controlPanel, 0, wx.EXPAND)
-        box.Add(self.sketch, 1, wx.EXPAND)
-        self.SetSizer(box)
 
     def initStatusBar(self):
         self.statusbar = self.CreateStatusBar()
@@ -33,7 +27,7 @@ class SketchFrame(wx.Frame):
 
     def OnSketchMotion(self, event):
         self.statusbar.SetStatusText("Pos: %s" %
-                str(event.GetPositionTuple()), 0)
+                str(event.GetPosition()), 0)
         self.statusbar.SetStatusText("Current Pts: %s" %
                 len(self.sketch.curLine), 1)
         self.statusbar.SetStatusText("Line Count: %s" %
@@ -53,7 +47,6 @@ class SketchFrame(wx.Frame):
                         ("&Blue", "", self.OnColor, wx.ITEM_RADIO),
                         ("&Other...", "", self.OnOtherColor, wx.ITEM_RADIO))),
                     ("", "", ""),
-                    ("About...", "Show about window", self.OnAbout),
                     ("&Quit", "Quit", self.OnCloseWindow)))]
 
     def createMenuBar(self):
@@ -70,7 +63,7 @@ class SketchFrame(wx.Frame):
             if len(eachItem) == 2:
                 label = eachItem[0]
                 subMenu = self.createMenu(eachItem[1])
-                menu.AppendMenu(wx.NewId(), label, subMenu)
+                menu.AppendMenu(wx.ID_ANY, label, subMenu)
             else:
                 self.createMenuItem(menu, *eachItem)
         return menu
@@ -96,7 +89,7 @@ class SketchFrame(wx.Frame):
             toolbar.AddSeparator()
             return
         bmp = wx.Image(filename, wx.BITMAP_TYPE_BMP).ConvertToBitmap()
-        tool = toolbar.AddSimpleTool(-1, bmp, label, help)
+        tool = toolbar.AddTool(-1,label, bmp, help)
         self.Bind(wx.EVT_MENU, handler, tool)
 
     def toolbarData(self):
@@ -107,11 +100,11 @@ class SketchFrame(wx.Frame):
 
     def createColorTool(self, toolbar, color):
         bmp = self.MakeBitmap(color)
-        tool = toolbar.AddRadioTool(-1, bmp, shortHelp=color)
+        tool = toolbar.AddRadioTool(-1,'color',bmp, shortHelp=color)
         self.Bind(wx.EVT_MENU, self.OnColor, tool)
 
     def MakeBitmap(self, color):
-        bmp = wx.EmptyBitmap(16, 15)
+        bmp = wx.Bitmap(16, 15)
         dc = wx.MemoryDC()
         dc.SelectObject(bmp)
         dc.SetBackground(wx.Brush(color))
@@ -133,7 +126,7 @@ class SketchFrame(wx.Frame):
             item = toolbar.FindById(itemId)
             color = item.GetShortHelp()
         else:
-            color = item.GetLabel()
+            color = item.GetLabel()[1:]
         self.sketch.SetColor(color)
 
     def OnCloseWindow(self, event):
@@ -142,18 +135,18 @@ class SketchFrame(wx.Frame):
     def SaveFile(self):
         if self.filename:
             data = self.sketch.GetLinesData()
-            f = open(self.filename, 'w')
+            f = open(self.filename, 'wb')
             cPickle.dump(data, f)
             f.close()
 
     def ReadFile(self):
         if self.filename:
             try:
-                f = open(self.filename, 'r')
+                f = open(self.filename, 'rb')
                 data = cPickle.load(f)
                 f.close()
                 self.sketch.SetLinesData(data)
-            except cPickle.UnpicklingError:
+            except pickle.UnpicklingError:
                 wx.MessageBox("%s is not a sketch file." % self.filename,
                              "oops!", style=wx.OK|wx.ICON_EXCLAMATION)
 
@@ -161,7 +154,7 @@ class SketchFrame(wx.Frame):
 
     def OnOpen(self, event):
         dlg = wx.FileDialog(self, "Open sketch file...", os.getcwd(),
-                           style=wx.OPEN, wildcard=self.wildcard)
+                           style=1, wildcard=self.wildcard)
         if dlg.ShowModal() == wx.ID_OK:
             self.filename = dlg.GetPath()
             self.ReadFile()
@@ -176,7 +169,7 @@ class SketchFrame(wx.Frame):
 
     def OnSaveAs(self, event):
         dlg = wx.FileDialog(self, "Save sketch as...", os.getcwd(),
-                           style=wx.SAVE | wx.OVERWRITE_PROMPT,
+                           style=1 | 1,
                            wildcard = self.wildcard)
         if dlg.ShowModal() == wx.ID_OK:
             filename = dlg.GetPath()
@@ -194,138 +187,9 @@ class SketchFrame(wx.Frame):
             self.sketch.SetColor(dlg.GetColourData().GetColour())
         dlg.Destroy()
 
-    def OnAbout(self, event):
-        dlg = SketchAbout(self)
-        dlg.ShowModal()
-        dlg.Destroy()
-
-
-class SketchAbout(wx.Dialog):
-    text = '''
-<html>
-<body bgcolor="#ACAA60">
-<center><table bgcolor="#455481" width="100%" cellspacing="0"
-cellpadding="0" border="1">
-<tr>
-    <td align="center"><h1>Sketch!</h1></td>
-</tr>
-</table>
-</center>
-<p><b>Sketch</b> is a demonstration program for <b>wxPython In Action</b>
-Chapter 7.  It is based on the SuperDoodle demo included with wxPython,
-available at http://www.wxpython.org/
-</p>
-
-<p><b>SuperDoodle</b> and <b>wxPython</b> are brought to you by
-<b>Robin Dunn</b> and <b>Total Control Software</b>, Copyright
-&copy; 1997-2006.</p>
-</body>
-</html>
-'''
-
-    def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, -1, 'About Sketch',
-                          size=(440, 400) )
-
-        html = wx.html.HtmlWindow(self)
-        html.SetPage(self.text)
-        button = wx.Button(self, wx.ID_OK, "Okay")
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(html, 1, wx.EXPAND|wx.ALL, 5)
-        sizer.Add(button, 0, wx.ALIGN_CENTER|wx.ALL, 5)
-
-        self.SetSizer(sizer)
-        self.Layout()
-
-
-
-class ControlPanel(wx.Panel):
-
-    BMP_SIZE = 16
-    BMP_BORDER = 3
-    NUM_COLS = 4
-    SPACING = 4
-
-    colorList = ('Black', 'Yellow', 'Red', 'Green', 'Blue', 'Purple',
-              'Brown', 'Aquamarine', 'Forest Green', 'Light Blue',
-              'Goldenrod', 'Cyan', 'Orange', 'Navy', 'Dark Grey',
-              'Light Grey')
-    maxThickness = 16
-
-    def __init__(self, parent, ID, sketch):
-        wx.Panel.__init__(self, parent, ID, style=wx.RAISED_BORDER)
-        self.sketch = sketch
-        buttonSize = (self.BMP_SIZE + 2 * self.BMP_BORDER,
-                      self.BMP_SIZE + 2 * self.BMP_BORDER)
-        colorGrid = self.createColorGrid(parent, buttonSize)
-        thicknessGrid = self.createThicknessGrid(buttonSize)
-        self.layout(colorGrid, thicknessGrid)
-
-    def createColorGrid(self, parent, buttonSize):
-        self.colorMap = {}
-        self.colorButtons = {}
-        colorGrid = wx.GridSizer(cols=self.NUM_COLS, hgap=2, vgap=2)
-        for eachColor in self.colorList:
-            bmp = parent.MakeBitmap(eachColor)
-            b = buttons.GenBitmapToggleButton(self, -1, bmp, size=buttonSize)
-            b.SetBezelWidth(1)
-            b.SetUseFocusIndicator(False)
-            self.Bind(wx.EVT_BUTTON, self.OnSetColour, b)
-            colorGrid.Add(b, 0)
-            self.colorMap[b.GetId()] = eachColor
-            self.colorButtons[eachColor] = b
-        self.colorButtons[self.colorList[0]].SetToggle(True)
-        return colorGrid
-
-    def createThicknessGrid(self, buttonSize):
-        self.thicknessIdMap = {}
-        self.thicknessButtons = {}
-        thicknessGrid = wx.GridSizer(cols=self.NUM_COLS, hgap=2, vgap=2)
-        for x in range(1, self.maxThickness + 1):
-            b = buttons.GenToggleButton(self, -1, str(x), size=buttonSize)
-            b.SetBezelWidth(1)
-            b.SetUseFocusIndicator(False)
-            self.Bind(wx.EVT_BUTTON, self.OnSetThickness, b)
-            thicknessGrid.Add(b, 0)
-            self.thicknessIdMap[b.GetId()] = x
-            self.thicknessButtons[x] = b
-        self.thicknessButtons[1].SetToggle(True)
-        return thicknessGrid
-
-    def layout(self, colorGrid, thicknessGrid):
-        box = wx.BoxSizer(wx.VERTICAL)
-        box.Add(colorGrid, 0, wx.ALL, self.SPACING)
-        box.Add(thicknessGrid, 0, wx.ALL, self.SPACING)
-        self.SetSizer(box)
-        box.Fit(self)
-
-    def OnSetColour(self, event):
-        color = self.colorMap[event.GetId()]
-        if color != self.sketch.color:
-            self.colorButtons[self.sketch.color].SetToggle(False)
-        self.sketch.SetColor(color)
-
-    def OnSetThickness(self, event):
-        thickness = self.thicknessIdMap[event.GetId()]
-        if thickness != self.sketch.thickness:
-            self.thicknessButtons[self.sketch.thickness].SetToggle(False)
-        self.sketch.SetThickness(thickness)
-
-
-class SketchApp(wx.App):
-
-    def OnInit(self):
-        bmp = wx.Image("splash.png").ConvertToBitmap()
-        wx.SplashScreen(bmp, wx.SPLASH_CENTRE_ON_SCREEN | wx.SPLASH_TIMEOUT,
-                1000, None, -1)
-        wx.Yield()
-
-        frame = SketchFrame(None)
-        frame.Show(True)
-        self.SetTopWindow(frame)
-        return True
 
 if __name__ == '__main__':
-    app = SketchApp(False)
+    app = wx.App()
+    frame = SketchFrame(None)
+    frame.Show(True)
     app.MainLoop()

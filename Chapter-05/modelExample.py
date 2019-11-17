@@ -20,7 +20,7 @@ class ModelExample(wx.Frame):
         wx.Frame.__init__(self, parent, id, 'Flintstones', 
                 size=(340, 200))
         panel = wx.Panel(self)   
-        #panel.SetBackgroundColour("Brown")
+        panel.SetBackgroundColour("Brown")
         self.Bind(wx.EVT_CLOSE, self.OnCloseWindow) 
         self.textFields = {}
         self.createTextFields(panel)     
@@ -38,13 +38,10 @@ class ModelExample(wx.Frame):
         xPos = 0
         for eachLabel, eachHandler in self.buttonData():
             pos = (xPos, yPos)
-            button = self.buildOneButton(panel, eachLabel, eachHandler, pos)
+            button = wx.Button(panel, -1, eachLabel, pos)
+            self.Bind(wx.EVT_BUTTON, eachHandler, button)
             xPos += button.GetSize().width
         
-    def buildOneButton(self, parent, label, handler, pos=(0,0)):
-        button = wx.Button(parent, -1, label, pos)
-        self.Bind(wx.EVT_BUTTON, handler, button)
-        return button
        
     def textFieldData(self):
         return (("First Name", (10, 50)),
@@ -52,13 +49,10 @@ class ModelExample(wx.Frame):
         
     def createTextFields(self, panel):
         for eachLabel, eachPos in self.textFieldData():
-            self.createCaptionedText(panel, eachLabel, eachPos)
-                
-    def createCaptionedText(self, panel, label, pos):
-        static = wx.StaticText(panel, wx.NewId(), label, pos)
-        static.SetBackgroundColour("White")
-        textPos = (pos[0] + 75, pos[1])
-        self.textFields[label] = wx.TextCtrl(panel, wx.NewId(), 
+            static = wx.StaticText(panel, 100, eachLabel, eachPos)
+            static.SetBackgroundColour("White")
+            textPos = (eachPos[0] + 75, eachPos[1])
+            self.textFields[eachLabel] = wx.TextCtrl(panel, 101, 
                 "", size=(100, -1), pos=textPos,
                 style=wx.TE_READONLY)
         
@@ -82,7 +76,7 @@ class ModelExample(wx.Frame):
         self.Destroy()
             
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = ModelExample(parent=None, id=-1)
     frame.Show()
     app.MainLoop()

@@ -10,7 +10,7 @@ to see the data in the standard text format.
 
 
 import wx
-import cPickle
+import _pickle as cPickle
 import pprint
 
 class TestFrame(wx.Frame):
@@ -147,6 +147,6 @@ class TestFrame(wx.Frame):
                 
     
 
-app = wx.PySimpleApp()
+app = wx.App()
 TestFrame().Show()
 app.MainLoop()

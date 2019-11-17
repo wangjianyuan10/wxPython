@@ -18,8 +18,8 @@ class TestFrame(wx.Frame):
             img2 = img1.Scale(w/2, h/2)
 
             # turn them into static bitmap widgets
-            sb1 = wx.StaticBitmap(p, -1, wx.BitmapFromImage(img1))
-            sb2 = wx.StaticBitmap(p, -1, wx.BitmapFromImage(img2))
+            sb1 = wx.StaticBitmap(p, -1, wx.Bitmap(img1))
+            sb2 = wx.StaticBitmap(p, -1, wx.Bitmap(img2))
 
             # and put them into the sizer
             fgs.Add(sb1)
@@ -29,7 +29,7 @@ class TestFrame(wx.Frame):
         self.Fit()
         
 
-app = wx.PySimpleApp()
+app = wx.App()
 frm = TestFrame()
 frm.Show()
 app.MainLoop()

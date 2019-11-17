@@ -9,9 +9,9 @@ class MyHtmlFrame(wx.Frame):
             html.SetStandardFonts()
 
         wx.CallAfter(
-            html.LoadPage, "http://wxwidgets.org/manuals/2.6.2/wx_wxbutton.html")
+            html.LoadPage, "E:/programs/2/H5/Day01/文档/01Html基础.html")
 
-app = wx.PySimpleApp()
+app = wx.App()
 frm = MyHtmlFrame(None, "Simple HTML Browser")
 frm.Show()
 app.MainLoop()

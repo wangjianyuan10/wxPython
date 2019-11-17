@@ -32,16 +32,16 @@ class RefactorExample(wx.Frame):
         menuBar.Append(menu2, "&Edit")
         self.SetMenuBar(menuBar)
 
-        static = wx.StaticText(panel, wx.NewId(), "First Name",
+        static = wx.StaticText(panel, 100, "First Name",
                 pos=(10, 50))
         static.SetBackgroundColour("White")
-        text = wx.TextCtrl(panel, wx.NewId(), "", size=(100, -1),
+        text = wx.TextCtrl(panel, 101, "", size=(100, -1),
                 pos=(80, 50))
 
-        static2 = wx.StaticText(panel, wx.NewId(), "Last Name",
+        static2 = wx.StaticText(panel, 102, "Last Name",
                 pos=(10, 80))
         static2.SetBackgroundColour("White")
-        text2 = wx.TextCtrl(panel, wx.NewId(), "", size=(100, -1),
+        text2 = wx.TextCtrl(panel, 103, "", size=(100, -1),
                 pos=(80, 80))
 
         firstButton = wx.Button(panel, -1, "FIRST")
@@ -70,7 +70,7 @@ class RefactorExample(wx.Frame):
         self.Destroy()
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = RefactorExample(parent=None, id=-1)
     frame.Show()
     app.MainLoop()

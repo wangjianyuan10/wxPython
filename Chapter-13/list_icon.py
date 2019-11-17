@@ -23,10 +23,10 @@ class DemoFrame(wx.Frame):
         # create some items for the list
         for x in range(25):
             img = x % (il_max+1)
-            self.list.InsertImageStringItem(x, 
+            self.list.InsertItem(x, 
                     "This is item %02d" % x, img)
 
-app = wx.PySimpleApp()
+app = wx.App()
 frame = DemoFrame()
 frame.Show()
 app.MainLoop()

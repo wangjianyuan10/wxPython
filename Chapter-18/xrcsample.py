@@ -30,14 +30,14 @@ class MyFrame(wx.Frame):
         email = emailctrl.GetValue()
         phonectrl = wx.xrc.XRCCTRL(self, "ID_PHONE")
         phone = phonectrl.GetValue()
-        print "You entered:\n  name: %s\n  email: %s\n  phone: %s\n" \
-              % (name, email, phone)
+        print("You entered:\n  name: %s\n  email: %s\n  phone: %s\n" \
+              % (name, email, phone))
 
     def OnCancel(self, evt):
         self.Close()
     
 
-app = wx.PySimpleApp(redirect=True)
+app = wx.App(redirect=True)
 frm = MyFrame()
 frm.Show()
 app.MainLoop()
