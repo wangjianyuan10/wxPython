@@ -23,13 +23,8 @@ app.MainLoop()
 Download or fork the repository
 
 ```sh
-git clone https://github.com/ubbn/wxPython.git
+git clone https://github.com/wangjianyuan/wxPython.git
 ```
-or
-```sh
-wget https://github.com/ubbn/wxPython/archive/master.zip
-```
-
 ## Disclosure
 
 Those original code examples are found in a book [wxPython in Action](http://www.amazon.com/Wxpython-Action-Noel-Rappin/dp/1932394621) authored by [Noel Rappin](https://www.amazon.com/Noel-Rappin/e/B002BLQ488) who is a senior developer and agile Coach at Table XI. Noel has authored multiple technical books, including **Rails 4 Test Prescriptions**, **Master Space and Time With JavaScript**, **Trust-Driven Development** and several more. If you like those example codes, I encourage you to buy his book [wxPython in Action](http://www.amazon.com/Wxpython-Action-Noel-Rappin/dp/1932394621). Contact with him on his [website](http://www.noelrappin.com/) or follow him on [twitter](https://twitter.com/noelrap).
